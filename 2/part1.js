@@ -1,3 +1,11 @@
+// -- First version
+
+function checksum (rows) {
+  return rows.reduce((sum, row) => sum + Math.max(...row) - Math.min(...row), 0)
+}
+
+// -- Refactor 1
+
 const add = (a, b) => a + b
 const max = (a, b) => Math.max(a, b)
 const min = (a, b) => Math.min(a, b)
@@ -5,8 +13,24 @@ const maxOf = (arr) => arr.reduce(max)
 const minOf = (arr) => arr.reduce(min)
 const rowChecksum = (arr) => maxOf(arr) - minOf(arr)
 
-function checksum (rows) {
+function checksum_1 (rows) {
   return rows.map(rowChecksum).reduce(add, 0)
+}
+
+// -- Adding part 2
+// this functional stuff is starting to get impenetrable
+const wholeNumber = (n) => Number.isInteger(n)
+const quotient = ([a, b]) => a / b
+const combinate = (row) => row.reduce((arr, v, i) => arr.concat(row.slice(i + 1).map(w => [v, w])), [])
+const wholeQuotient = (row) =>
+  combinate(row.sort().reverse())
+  .map(quotient)
+  .find(wholeNumber)
+
+function divisibility (rows) {
+  return rows
+    .map(wholeQuotient)
+    .reduce(add, 0)
 }
 
 const test = [
@@ -34,5 +58,15 @@ const input = [
   [707, 668, 1778, 1687, 2073, 1892, 62, 1139, 908, 78, 1885, 800, 945, 712, 57, 65]
 ]
 
+const part2Test = [
+  [5, 9, 2, 8],
+  [9, 4, 7, 3],
+  [3, 8, 6, 5]
+]
+
 console.log(checksum(test))
 console.log(checksum(input))
+console.log(checksum_1(test))
+console.log(checksum_1(input))
+console.log(divisibility(part2Test))
+console.log(divisibility(input))
