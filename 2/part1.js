@@ -1,6 +1,12 @@
+const add = (a, b) => a + b
+const max = (a, b) => Math.max(a, b)
+const min = (a, b) => Math.min(a, b)
+const maxOf = (arr) => arr.reduce(max)
+const minOf = (arr) => arr.reduce(min)
+const rowChecksum = (arr) => maxOf(arr) - minOf(arr)
 
 function checksum (rows) {
-  return rows.reduce((sum, row) => sum + Math.max(...row) - Math.min(...row), 0)
+  return rows.map(rowChecksum).reduce(add, 0)
 }
 
 const test = [
