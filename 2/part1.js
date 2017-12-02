@@ -19,18 +19,20 @@ function checksum_1 (rows) {
 
 // -- Adding part 2
 // this functional stuff is starting to get impenetrable
-const wholeNumber = (n) => Number.isInteger(n)
+const isWholeNumber = (n) => Number.isInteger(n)
+const isSmaller = (a, b) => b - a
 const quotient = ([a, b]) => a / b
-const combinate = (row) => row.reduce((arr, v, i) => arr.concat(row.slice(i + 1).map(w => [v, w])), [])
+const combinePairs = (acc, el, i, arr) =>
+  acc.concat(arr.slice(i + 1).map(w => [el, w]))
 const wholeQuotient = (row) =>
-  combinate(row.sort().reverse())
-  .map(quotient)
-  .find(wholeNumber)
+  row
+    .sort(isSmaller)
+    .reduce(combinePairs, [])
+    .map(quotient)
+    .find(isWholeNumber)
 
 function divisibility (rows) {
-  return rows
-    .map(wholeQuotient)
-    .reduce(add, 0)
+  return rows.map(wholeQuotient).reduce(add, 0)
 }
 
 const test = [
