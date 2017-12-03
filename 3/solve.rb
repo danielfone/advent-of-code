@@ -20,6 +20,8 @@ def move
   @y += @dy
 end
 
+## Part 1
+
 1.upto(target) do |i|
   grid[i] = [@x, @y]
   update_direction
@@ -28,3 +30,23 @@ end
 
 p(grid[target])
 p(grid[target].map(&:abs).sum)
+
+## Part 2
+
+@x = @y = 0
+@dx = 0
+@dy = -1
+
+def neighbours(x,y, grid:)
+  neighbour_coords = [x+1, x, x-1].product([y-1, y, y+1]) - [x,y]
+  grid.values_at(*neighbour_coords).compact
+end
+
+1.upto(target) do |i|
+  grid[[@x, @y]] = sum = neighbours(@x, @y, grid: grid).sum
+  grid[[@x, @y]] = 1 if sum.zero?
+  p(sum)
+  p(sum) and break if sum > target
+  update_direction
+  move
+end
