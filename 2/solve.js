@@ -7,10 +7,8 @@ function checksum (rows) {
 // -- Refactor 1
 
 const add = (a, b) => a + b
-const max = (a, b) => Math.max(a, b)
-const min = (a, b) => Math.min(a, b)
-const maxOf = (arr) => arr.reduce(max)
-const minOf = (arr) => arr.reduce(min)
+const maxOf = (arr) => arr.reduce(Math.max)
+const minOf = (arr) => arr.reduce(Math.min)
 const rowChecksum = (arr) => maxOf(arr) - minOf(arr)
 
 function checksum_1 (rows) {
@@ -19,17 +17,16 @@ function checksum_1 (rows) {
 
 // -- Adding part 2
 // this functional stuff is starting to get impenetrable
-const isWholeNumber = (n) => Number.isInteger(n)
 const isSmaller = (a, b) => b - a
 const quotient = ([a, b]) => a / b
-const combinePairs = (acc, el, i, arr) =>
-  acc.concat(arr.slice(i + 1).map(w => [el, w]))
+const combinePairs = (pairs, el, i, arr) =>
+  pairs.concat(arr.slice(i + 1).map(w => [el, w]))
 const wholeQuotient = (row) =>
   row
     .sort(isSmaller)
     .reduce(combinePairs, [])
     .map(quotient)
-    .find(isWholeNumber)
+    .find(Number.isInteger)
 
 function divisibility (rows) {
   return rows.map(wholeQuotient).reduce(add, 0)
